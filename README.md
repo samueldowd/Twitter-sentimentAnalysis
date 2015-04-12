@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Sentiment Analysis with Python, Twitter, AlchemyAPI, MongoDB, and Angular
 
 This app will let you query Twitter using Python, send each tweet returned into a Mongo database, and then using another Python script pull records out of MongoDB to populate a table in the UI.
@@ -68,3 +69,6 @@ python -m SimpleHTTPServer
 ```
 
 + In your browser open [localhost:8000](http://localhost:8000)
+=======
+# Twitter-sentimentAnalysis
+>>>>>>> 034fc7a1c473a6c255a67390ad45196253bb5203
