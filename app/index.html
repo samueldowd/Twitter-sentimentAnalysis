@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en" ng-app="myApp">
+<head>
+  <meta charset="UTF-8">
+  <title>Angular Demo</title>
+  <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular.min.js"></script>
+  <script src="js/controllers.js"></script>
+</head>
+<body>
+
+<div class="main" ng-controller = "MyController">
+  <div>
+  	<form class="form-inline">
+      <inputplaceholder="Enter a search term" autofocus>
+      <div class="form-group">
+        <label for="search">Search</label>
+        <input ng-model="tweet" type="search" class="form-control" id="search" placeholder="Tweet Text...">
+      </div>
+      </div>
+    </form>  	
+  <table class="table table-hover">
+    <tr>
+      <td>
+        Hashtags
+      </td>
+      <td>
+        Twitter Handle
+      </td>
+      <td>
+        User's Name
+      </td>
+      <td>
+        Tweet Text
+      </td>
+      <td>
+        Tweet Sentiment
+      </td>
+    <tr ng-repeat="tweet in tweets | filter:query">
+      <td>
+	       <p ng-repeat="hashtags in tweet.object['hashtags']">
+         {{  hashtags }}
+         </p>
+      </td>
+      <td>	
+        <a ng-href="{{ tweet.object.author.author_uri }}">
+          {{ tweet.object.author['author_alias'] }}
+        </a>
+      </td>
+      <td>
+        {{ tweet.object.author['author_name'] }}
+      </td>
+      <td>
+        {{ tweet.object['text'] }}
+        <p><a  ng-href="{{ tweet.object.tweet_uri }}">Link to Tweet</a></p>
+      </td>
+      <td ng-style="{'background-color': '{{ tweet.object.sentiment.color }}'}">
+        {{ tweet.object.sentiment.type }}
+      </td>   
+    <tr>
+  </table>
+</div>
+
+</body>
+</html>

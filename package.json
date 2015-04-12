@@ -1,0 +1,32 @@
+{
+  "name": "twitterAngular",
+  "version": "1.0.0",
+  "description": "A nodejs app that will show sentiment for MHE tweets",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies" : {
+    "jquery": "*",
+    "mongodb": "*",
+    "angular": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/samueldowd/twitterAngular.git"
+  },
+  "keywords": [
+    "mhe",
+    "twitter",
+    "angular",
+    "node",
+    "sentiment",
+    "alchemy"
+  ],
+  "author": "Samuel Dowd",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/samueldowd/twitterAngular/issues"
+  },
+  "homepage": "https://github.com/samueldowd/twitterAngular"
+}
