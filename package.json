@@ -9,7 +9,8 @@
   "dependencies" : {
     "jquery": "*",
     "mongodb": "*",
-    "angular": "*"
+    "angular": "*",
+    "express": "*"
   },
   "repository": {
     "type": "git",
