@@ -40,6 +40,8 @@ Thumbs.db
 alchemy keys.txt
 api_key.txt
 Documentation.json
+config.py
+
 
 # Directories #
 ######################

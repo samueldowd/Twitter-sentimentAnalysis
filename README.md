@@ -12,30 +12,15 @@ This app will let you query Twitter using Python, send each tweet returned into 
 
 #### Running the App:
 
+##### Setting Config Variables:
++ Open config.cfg and change the config variables to match your setup
+
 ##### Populating the Database
 + Clone/fork this Repo
 + Run the requirements.txt script with pip to install the python dependencies
 
 ``` python
 pip install -r requirements.txt
-```
-
-+ Run the alchemyapi.py python script with your Alchemy API key as an argument
-
-``` python
-python alchemyapi.py <YOUR_ALCHEMY_API_KEY>
-```
-
-+ On line 28, change <SEARCH_TERM> to the search term you would like to use.
-+ Open tweetSensor.py and replace the variable values on lines 41-44 with your Twitter credentials.
-
-``` python
-ts = TwitterSearch(
-    consumer_key = '<YOUR_TWITTER_CONSUMER_KEY_HERE>',
-    consumer_secret = '<YOUR_TWITTER_CONSUMER_SECRET_HERE>',
-    access_token = '<YOUR_TWITTER_ACCESS_TOKEN_HERE>',
-    access_token_secret = '<YOUR_TWITTER_ACCESS_TOKEN_SECRET_HERE>'
- )
 ```
 
 + Run the tweetSensor.py script and pass your search term as an argument. If your search term includes a hashtag, substitute the # with .
@@ -54,7 +39,7 @@ python tweetSensor.py .mheducation
     To retrieve the last 10 tweets from your search for #mheducation:
 
 ``` python
-python resultService.py <RESULT_COUNT> .mheducation
+python resultService.py 10 .mheducation
 ```
 
 + This script places a JSON file in /app/js/ which the UI will use.

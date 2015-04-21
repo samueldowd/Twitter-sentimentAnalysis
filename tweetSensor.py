@@ -7,37 +7,53 @@ from alchemyapi import AlchemyAPI
 import sys
 
 arg_keyword = str(sys.argv[1])
+    
+# Read the config file for config variables
+import ConfigParser
 
-client = pymongo.MongoClient('localhost', 27017)
+config = ConfigParser.RawConfigParser()
+config.read('config.cfg')
+mongo_url = config.get('Mongo', 'db_url')
+mongo_db = config.get('Mongo', 'db_name')
 
+# Connect to the Mongo database using MongoClient
+
+client = pymongo.MongoClient(mongo_url)
+db = client.get_default_database()
+# Access/create the collection based on the command line argument
+tweets = db[arg_keyword]
+
+#Generate the alchemyapi variable
 alchemyapi = AlchemyAPI()
 
-db = client.twitterAnalysis
-
+# To accommodate for hashtags the user can substitute a . for the # in the command line. Lines 30 & 31 return it to a hashtag for the search.
 if arg_keyword[0] is ".":
     arg_keyword = arg_keyword.replace('.', '#')
 
-tweets = db[arg_keyword]
-
+# Lines 33-42 ensure that the query is not doing duplicate work.
+# First, it counts to see how many documents exist in the collection
 db_count = tweets.count()
 
+# If there are documents in the collection, the collection is queried, tweet objects are sorted by date, and the tweet_id of the most recent tweet is retrieved and later set as the "since_id"
 if db_count is not 0:
     latest_id = tweets.find( {}, { 'object.tweet_id':1 } ).sort("startedAtTime").limit(1)
     latest_id_str = latest_id[db_count-1]['object']['tweet_id']
     latest_id_int = int(latest_id_str)
     print 'Count of documents in Mongo is not 0. It is ' + str(db_count) + '. Mongo is now identifying the latest tweet ID to append as a parameter to the API call.'
+# If ther are no documents in the collection, no queries are done, and the since_id is left out of the API call.    
 else:
     print 'The Mongo collection ' + arg_keyword + ' is empty. The script will now collect all tweets.'
+    
 # create a TwitterSearchOrder object
 tso = TwitterSearchOrder() 
 
-    # let's define all words we would like to have a look for
+# let's define all words we would like to have a look for
 tso.set_keywords([arg_keyword])
 
-    # we want to see English tweets only
+# we want to see English tweets only
 tso.set_language('en') 
 
-    # and don't give us all those entity information
+# and don't give us all those entity information
 tso.set_include_entities(True)
 
 if db_count is not 0:
@@ -46,42 +62,21 @@ if db_count is not 0:
 else:
 	print 'No documents exist in the ' + arg_keyword + ' collection right now so the since_id parameter will be empty and all tweets will be collected.'
 
+    
 # it's time to create a TwitterSearch object with our secret tokens
 ts = TwitterSearch(
-    consumer_key = '<YOUR_TWITTER_CONSUMER_KEY_HERE>',
-    consumer_secret = '<YOUR_TWITTER_CONSUMER_SECRET_HERE>',
-    access_token = '<YOUR_TWITTER_ACCESS_TOKEN_HERE>',
-    access_token_secret = '<YOUR_TWITTER_ACCESS_TOKEN_SECRET_HERE>'
+    consumer_key = config.get('Twitter', 'consumer_key'),
+    consumer_secret = config.get('Twitter', 'consumer_secret'),
+    access_token = config.get('Twitter', 'access_token'),
+    access_token_secret = config.get('Twitter', 'access_token_secret')
  )
-
-# caliper_tweet = {
-#   "@context": "http://purl.imsglobal.org/ctx/caliper/v1/MessagingEvent",
-#   "@type": "MessagingEvent",
-#   "startedAtTime": "{{ created_at }}",
-#   ## Can be used to query Twitter API for user information
-#   "actor": "uri:twitter/user/{{ user['id_str'] }}",
-#   "verb": "tweetSent",
-#   "object": {
-#     "@type": "tweet",
-#     "@id": "uri:twitter/tweet/{{ id_str}}",
-#     "subtype": "tweet",
-#     ## "to" should be calculated by checking in_reply_to_user_id_str is null. If it's not null, then it should be concatenated to "uri:twitter/user/" and stored in "object"['to']
-#     "to": "uri:twitter/user/{{ in_reply_to_user_id_str }}",
-#     "author": "uri:twitter/user/{{ user['id_str'] }}",
-#     "text": "{{ text }}",
-#     "parent": "uri:twitter/tweet/{{ in_reply_to_user_id_str }}",
-#     ## "mentions" is an array of the caliper IDs from the user_mentions objects array
-#     "mentions": ["uri:twitter/user/{{ entities[user_mentions]['id_str'] }}", "..." ],
-#     ## "hashtags" is an array of the hashtag texts included in the tweet entities
-#     "hashtags": ["{{ entities[hashtags][text] }}", " "]
-#   }
-# }
-
-# Open the variables
-db_inserts = 0
-caliper_tweet_object = {}
-twitter_id_list = []
+ 
+# Perform the search
 twitter_search = ts.search_tweets_iterable(tso)
+
+# Initiate the variables for the search
+db_inserts = 0
+twitter_id_list = []
 tweet_sentiment = ''
 
 # this is where the fun actually starts :)
@@ -122,7 +117,12 @@ for tweet in twitter_search:
     "hashtags": []
   }
 }
-
+    
+     # Set the re-usable variables
+    user_id = tweet['user']['id_str']
+    tweet_text = tweet['text']
+    tweet_id = tweet['id_str']
+    
     ## AlchemyAPI Sentiment Analysis
     response = alchemyapi.sentiment('text', tweet_text)
     if 'type' in response['docSentiment'] and not None:
@@ -140,11 +140,6 @@ for tweet in twitter_search:
             tweet_sentiment_color = "rgba(255,0,0," + str(tweet_sentiment_score_a) + ")"
     else:
         print "Error"        
-
-    # Set the re-usable variables
-    user_id = tweet['user']['id_str']
-    tweet_text = tweet['text']
-    tweet_id = tweet['id_str']
 
     ds = tweet['created_at']
     tweet_date = parse(ds)
@@ -186,4 +181,4 @@ for tweet in twitter_search:
     print str(db_inserts) + " were made."
 
 print 'deadbeef'
-print str(db_inserts) + " inserts made."
+print str(db_inserts) + " inserts made"

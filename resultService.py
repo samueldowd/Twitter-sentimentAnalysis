@@ -11,9 +11,14 @@ arg_keyword = sys.argv[2]
 if arg_keyword[0] is ".":
     arg_keyword = arg_keyword.replace('.', '#')
 
-client = pymongo.MongoClient('localhost', 27017)
+import ConfigParser
 
-db = client.twitterAnalysis
+config = ConfigParser.RawConfigParser()
+config.read('config.cfg')
+mongo_url = config.get('Mongo', 'db_url')
+
+client = pymongo.MongoClient(mongo_url)
+db = client.get_default_database()
 
 tweets = db[arg_keyword]
 

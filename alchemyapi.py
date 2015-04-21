@@ -46,20 +46,26 @@ if __name__ == '__main__':
     OUTPUT:
     none
     """
+# Read the config file for config variables
+import ConfigParser
 
-    import sys
-    if len(sys.argv) == 2 and sys.argv[1]:
-        if len(sys.argv[1]) == 40:
-            # write the key to the file
-            f = open('api_key.txt', 'w')
-            f.write(sys.argv[1])
-            f.close()
-            print('Key: ' + sys.argv[1] + ' was written to api_key.txt')
-            print(
-                'You are now ready to start using AlchemyAPI. For an example, run: python example.py')
-        else:
-            print(
-                'The key appears to invalid. Please make sure to use the 40 character key assigned by AlchemyAPI')
+config = ConfigParser.RawConfigParser()
+config.read('config.cfg')
+api_key = config.get('Alchemy', 'api_key'),
+
+import sys
+if len(sys.argv) == 2 and sys.argv[1]:
+    if len(sys.argv[1]) == 40:
+        # write the key to the file
+        f = open('api_key.txt', 'w')
+        f.write(sys.argv[1])
+        f.close()
+        print('Key: ' + sys.argv[1] + ' was written to api_key.txt')
+        print(
+            'You are now ready to start using AlchemyAPI. For an example, run: python example.py')
+    else:
+        print(
+            'The key appears to invalid. Please make sure to use the 40 character key assigned by AlchemyAPI')
 
 
 class AlchemyAPI:
@@ -123,6 +129,9 @@ class AlchemyAPI:
     ENDPOINTS['imagetagging'] = {}
     ENDPOINTS['imagetagging']['url'] = '/url/URLGetRankedImageKeywords'
     ENDPOINTS['imagetagging']['image'] = '/image/ImageGetRankedImageKeywords'
+    ENDPOINTS['facetagging'] = {}
+    ENDPOINTS['facetagging']['url'] = '/url/URLGetRankedImageFaceTags'
+    ENDPOINTS['facetagging']['image'] = '/image/ImageGetRankedImageFaceTags'    
     ENDPOINTS['taxonomy'] = {}
     ENDPOINTS['taxonomy']['url'] = '/url/URLGetRankedTaxonomy'
     ENDPOINTS['taxonomy']['html'] = '/html/HTMLGetRankedTaxonomy'
@@ -143,7 +152,8 @@ class AlchemyAPI:
         try:
             # Open the key file and read the key
             f = open("api_key.txt", "r")
-            key = f.read().strip()
+            key = config.get('Alchemy', 'api_key')
+            print(key)
 
             if key == '':
                 # The key file should't be blank
@@ -719,6 +729,24 @@ class AlchemyAPI:
 
         options[flavor] = data
         return self.__analyze(AlchemyAPI.ENDPOINTS['imagetagging'][flavor], {}, options)
+
+    def faceTagging(self, flavor, data, options={}):
+        """
+
+        INPUT:
+        flavor -> which version of the call only url or image.
+        data -> the data to analyze, either the the url or path to image.
+        options -> various parameters that can be used to adjust how the API works, see below for more info on the available options.
+        """
+        if flavor not in AlchemyAPI.ENDPOINTS['facetagging']:
+            return {'status': 'ERROR', 'statusInfo': 'facetagging for ' + flavor + ' not available'}
+        elif 'image' == flavor:
+            image = open(data, 'rb').read()
+            options['imagePostMode'] = 'raw'
+            return self.__analyze(AlchemyAPI.ENDPOINTS['facetagging'][flavor], options, image)
+
+        options[flavor] = data
+        return self.__analyze(AlchemyAPI.ENDPOINTS['facetagging'][flavor], {}, options)
 
     def __analyze(self, endpoint, params, post_data=bytearray()):
         """
