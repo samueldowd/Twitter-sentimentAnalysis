@@ -2,9 +2,13 @@
   "name": "twitterAngular",
   "version": "1.0.0",
   "description": "A nodejs app that will show sentiment for MHE tweets",
-  "main": "script.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+    "engines": {
+    "node": "0.10.x",
+    "npm": "*"
   },
   "dependencies" : {
     "jquery": "*",

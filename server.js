@@ -7,7 +7,7 @@ var express = require("express");
 var app = express();
 
 app.use(express.static(process.env.PWD)); 
-app.get("app/", function(request, response) {
+app.get("/", function(request, response) {
     response.send("Hello SVS!");
 });
 
