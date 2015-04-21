@@ -13,7 +13,7 @@ This app will let you query Twitter using Python, send each tweet returned into 
 #### Running the App:
 
 ##### Populating the Database
-+ Clone the TwitterAngular Repo
++ Clone/fork this Repo
 + Run the requirements.txt script with pip to install the python dependencies
 
 ``` python
