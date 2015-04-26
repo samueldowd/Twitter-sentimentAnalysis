@@ -19,7 +19,12 @@ pip install -r requirements.txt
 ```
 
 ##### Setting Config Variables:
-+ Open config.cfg and change the config variables to match your setup
++ Open config.py and change the variables to your values
++ Run the script in your terminal to produce the config.cfg file
+
+``` python
+python config.py
+```
 
 ##### Collecting Tweets
 
