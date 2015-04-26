@@ -10,12 +10,7 @@ This app will let you query Twitter using Python, send each tweet returned into 
 + You have [Python](https://www.python.org/downloads/) installed
 + You have registered for an [API key](http://www.alchemyapi.com/api/register.html) from Alchemy API.
 
-#### Running the App:
-
-##### Setting Config Variables:
-+ Open config.cfg and change the config variables to match your setup
-
-##### Populating the Database
+#### Using the Repo:
 + Clone/fork this Repo
 + Run the requirements.txt script with pip to install the python dependencies
 
@@ -23,23 +18,29 @@ This app will let you query Twitter using Python, send each tweet returned into 
 pip install -r requirements.txt
 ```
 
-+ Run the tweetSensor.py script and pass your search term as an argument. If your search term includes a hashtag, substitute the # with .
+##### Setting Config Variables:
++ Open config.cfg and change the config variables to match your setup
 
-    To search for #mheducation:
+##### Collecting Tweets
+
++ Run the tweet_collector.py script and pass your search term and result limit as an argument. If your search term includes a hashtag, substitute the # with .
+
+    To search for 30 #mheducation tweets:
 
 ``` python
-python tweetSensor.py .mheducation
+python tweet_collector.py .mheducation 30
 ```
 
 + If no errors appear in the terminal, check your Mongo database and collection to make sure the tweets are there.
+++ Note that Python creates a new collection for your search term if a collection did not already exist with that as a name
 
-##### Querying the results
-+ Run the resultService.py script, passing the number of tweets you'd like to have returned and the collection to search as arguments (the same as the search term you used to collect the tweets).
+##### Retrieving Tweets
++ Run the tweet_results.py script, passing the number of tweets you'd like to have returned and the collection to search as arguments (the same as the search term you used to collect the tweets).
 
-    To retrieve the last 10 tweets from your search for #mheducation:
+    To retrieve the latest 10 tweets from your search for #mheducation:
 
 ``` python
-python resultService.py 10 .mheducation
+python tweet_results.py .mheducation 10 
 ```
 
 + This script places a JSON file in /app/js/ which the UI will use.
@@ -53,3 +54,9 @@ python -m SimpleHTTPServer
 ```
 
 + In your browser open [localhost:8000](http://localhost:8000)
+
+##### Using the TweetSensor module:
++ Import the TweetSensor module
++ It Comes with two functions
+++ collect_tweets(keyword, count, force=False)
+++ get_results(keyword, count, force=False)

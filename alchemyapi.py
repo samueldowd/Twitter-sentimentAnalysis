@@ -153,7 +153,6 @@ class AlchemyAPI:
             # Open the key file and read the key
             f = open("api_key.txt", "r")
             key = config.get('Alchemy', 'api_key')
-            print(key)
 
             if key == '':
                 # The key file should't be blank
