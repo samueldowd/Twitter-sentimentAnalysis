@@ -37,7 +37,7 @@ python tweet_collector.py .mheducation 30
 ```
 
 + If no errors appear in the terminal, check your Mongo database and collection to make sure the tweets are there.
-++ Note that Python creates a new collection for your search term if a collection did not already exist with that as a name
++ Note that Python creates a new collection for your search term if a collection did not already exist with that as a name
 
 ##### Retrieving Tweets
 + Run the tweet_results.py script, passing the number of tweets you'd like to have returned and the collection to search as arguments (the same as the search term you used to collect the tweets).
@@ -62,6 +62,6 @@ python -m SimpleHTTPServer
 
 ##### Using the TweetSensor module:
 + Import the TweetSensor module
-+ It Comes with two functions
-++ collect_tweets(keyword, count, force=False)
-++ get_results(keyword, count, force=False)
+It Comes with two functions:
++ collect_tweets(keyword, count, force=False)
++ get_results(keyword, count, force=False)

@@ -8,6 +8,7 @@
 *.exe
 *.o
 *.so
+*.pyc
  
 # Packages #
 ############
@@ -41,6 +42,8 @@ alchemy keys.txt
 api_key.txt
 Documentation.json
 my_config.py
+config.cfg
+
 # Directories #
 ######################
 Archived/
