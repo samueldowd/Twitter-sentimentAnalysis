@@ -62,6 +62,8 @@ python -m SimpleHTTPServer
 
 ##### Using the TweetSensor module:
 + Import the TweetSensor module
-It Comes with two functions:
+
+It comes with two functions:
+
 + collect_tweets(keyword, count, force=False)
 + get_results(keyword, count, force=False)
