@@ -19,54 +19,56 @@
 <body>
 
 <div class="main" ng-controller = "MyController">
+  <!--<label for="search">Search</label>-->
+  <!--<input ng-model="q" type="search" class="form-control" id="search" placeholder="Tweet Text..." autofocus>-->
   <div>
-  	<form class="form-inline">
-      <inputplaceholder="Enter a search term" autofocus>
-      <div class="form-group">
-        <label for="search">Search</label>
-        <input ng-model="tweet" type="search" class="form-control" id="search" placeholder="Tweet Text...">
-      </div>
-      </div>
-    </form>  	
-  <table class="table table-hover">
-    <tr>
-      <td>
-        Hashtags
-      </td>
-      <td>
-        Twitter Handle
-      </td>
-      <td>
-        User's Name
-      </td>
-      <td>
-        Tweet Text
-      </td>
-      <td>
-        Tweet Sentiment
-      </td>
-    <tr ng-repeat="tweet in tweets | filter:query">
-      <td>
-	       <p ng-repeat="hashtags in tweet.object['hashtags']">
-         {{  hashtags }}
-         </p>
-      </td>
-      <td>	
-        <a ng-href="{{ tweet.object.author.author_uri }}">
-          {{ tweet.object.author['author_alias'] }}
-        </a>
-      </td>
-      <td>
-        {{ tweet.object.author['author_name'] }}
-      </td>
-      <td>
-        {{ tweet.object['text'] }}
-        <p><a  ng-href="{{ tweet.object.tweet_uri }}">Link to Tweet</a></p>
-      </td>
-      <td ng-style="{'background-color': '{{ tweet.object.sentiment.color }}'}">
-        {{ tweet.object.sentiment.type }}
-      </td>   
-    <tr>
+  	<input ng-model="query" placeholder="Enter a search term" autofocus>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>
+          Hashtags
+        </th>
+        <th>
+          Twitter Handle
+        </th>
+        <th>
+          User's Name
+        </th>
+        <th>
+          Tweet Text
+        </th>
+        <th>
+          Tweet Sentiment
+        </th>
+    </thead>
+    <tbody>
+      <tr ng-repeat="tweet in tweets | filter: query">
+        <td>
+  	       <p ng-repeat="hashtags in tweet.object['hashtags']">
+           {{  hashtags }}
+           </p>
+        </td>
+        <td>	
+          <a ng-href="{{ tweet.object.author.author_uri }}">
+            {{ tweet.object.author['author_alias'] }}
+          </a>
+        </td>
+        <td>
+          {{ tweet.object.author['author_name'] }}
+        </td>
+        <td>
+          {{ tweet.object['text'] }}
+          <p><a  ng-href="{{ tweet.object.tweet_uri }}">Link to Tweet</a></p>
+        </td>
+        <td ng-style="{'background-color': '{{ tweet.object.sentiment.color }}'}">
+          {{ tweet.object.sentiment.type }}
+        </td>   
+    <!--<li class="animate-repeat" ng-if="results.length == 0">-->
+    <!--  <strong>No results found...</strong>-->
+    <!--</li>-->
+    </tbody>    
   </table>
 </div>
 

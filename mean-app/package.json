@@ -2,7 +2,7 @@
   "name": "twitterAngular",
   "version": "1.0.0",
   "description": "A nodejs app that will show sentiment for MHE tweets",
-  "main": "server.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,8 +14,12 @@
     "jquery": "*",
     "mongodb": "*",
     "angular": "*",
+    "mongoose": "*",
+    "express": "*",
+    "http": "*",
+    "body-parser": "*",
     "path": "*",
-    "express": "*"
+    "multer": "*"
   },
   "repository": {
     "type": "git",
